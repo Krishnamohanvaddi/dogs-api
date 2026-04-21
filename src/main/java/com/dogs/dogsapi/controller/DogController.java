@@ -19,7 +19,7 @@ public class DogController {
         this.dogService = dogService;
     }
 
-    @GetMapping
+    @GetMapping("/getAllDogs")
     public ResponseEntity<List<Dog>> getAllDogsList() {
         return ResponseEntity.ok(dogService.getAllDogs());
     }
@@ -31,7 +31,7 @@ public class DogController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/createDog")
     public ResponseEntity<Dog> createDog(@RequestBody Dog dog) {
         try {
             Dog created = dogService.createDog(dog);
@@ -54,7 +54,7 @@ public class DogController {
     public ResponseEntity<Void> deleteDog(@PathVariable Long id) {
         try {
             dogService.deleteDog(id);
-            return ResponseEntity.noContent().build();
+               return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
