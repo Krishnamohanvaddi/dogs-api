@@ -1,93 +1,101 @@
-# 🐾🐶 Dogs API — Backend
 
- A RESTful API's for managing dog breeds and sub-breeds, built with **Java 17**, **Spring Boot 4**, and **PostgreSQL**. Supports full CRUD operations. Deployed via Docker on Render.
 
----
+# 🐶 Dogs API — Backend
 
-## 🔗 Live URLs
+This is a simple REST API to manage dog breeds and their sub-breeds.
+It is built using **Java 17, Spring Boot, and PostgreSQL** and supports basic CRUD operations (Create, Read, Update, Delete).
 
-| Resource | URL |
-|---|---|
-| **Live API** | `https://dogs-api-y5cx.onrender.com/api/dogs` |
-| **GitHub Repo** | `https://github.com/Krishnamohanvaddi/dogs-api` |
+The application is deployed using Docker on Render.
 
 ---
 
-## Overview
+## 🔗 Links
 
-This API serves as the backend for a dog breed management system. It exposes HTTP endpoints that allow a client to **create**, **read**, **update**, and **delete** dog breeds, along with their associated sub-breeds.
+* **Live API**
+  [https://dogs-api-y5cx.onrender.com/api/dogs](https://dogs-api-y5cx.onrender.com/api/dogs)
 
-All data changes persist to a **PostgreSQL** database, meaning changes survive browser refreshes, server restarts, and redeployments.
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Language | Java 17 |
-| Framework | Spring Boot 4.0.5 |
-| Database | PostgreSQL 15 |
-| Build tool | Maven  |
-| Containerisation | Docker (eclipse-temurin:17) |
-| Deployment | Render (Docker runtime) |
+* **GitHub Repository**
+  [https://github.com/Krishnamohanvaddi/dogs-api](https://github.com/Krishnamohanvaddi/dogs-api)
 
 ---
 
-## API Endpoints
+## 📌 Overview
+
+This API is the backend for a dog breed management system.
+
+It allows you to:
+
+* Add new dog breeds
+* View all breeds
+* Search for a breed
+* Update breed details
+* Delete a breed
+
+All data is stored in a PostgreSQL database, so changes are saved even after refresh, restart, or redeployment.
+
+---
+
+## ⚙️ Tech Stack
+
+* **Java 17**
+* **Spring Boot 4**
+* **PostgreSQL**
+* **Maven**
+* **Docker**
+* **Render (for deployment)**
+
+---
+
+## 📡 API Endpoints
 
 Base URL: `/api/dogs`
 
-### Get all breeds
+---
+
+### 1. Get all breeds
 
 ```
 GET /api/dogs
 ```
 
-Returns a list of all dog breeds in the database.
+Returns all dog breeds.
 
-**Response `200 OK`:**
+**Example response:**
+
 ```json
 [
   { "id": 1, "breed": "labrador", "subBreeds": "" },
-  { "id": 2, "breed": "bulldog",  "subBreeds": "boston,french" },
-  { "id": 3, "breed": "poodle",   "subBreeds": "miniature,standard,toy" }
+  { "id": 2, "breed": "bulldog", "subBreeds": "boston,french" }
 ]
 ```
 
 ---
 
-### Get breed by name
+### 2. Get breed by name
 
 ```
 GET /api/dogs/{breed}
 ```
 
-Fetches a single breed by its name.
+Example:
 
-**Example:** `GET /api/dogs/poodle`
-
-**Response `200 OK`:**
-```json
-{
-  "id": 3,
-  "breed": "poodle",
-  "subBreeds": "miniature,standard,toy"
-}
+```
+GET /api/dogs/poodle
 ```
 
-**Response `404 Not Found`** — if the breed does not exist.
+* Returns the breed if found
+* Returns **404** if not found
 
 ---
 
-### Create a breed
+### 3. Add a new breed
 
 ```
 POST /api/dogs
-Content-Type: application/json
 ```
 
 **Request body:**
+
 ```json
 {
   "breed": "labrador",
@@ -95,29 +103,25 @@ Content-Type: application/json
 }
 ```
 
-**Response `201 Created`:**
-```json
-{
-  "id": 84,
-  "breed": "labrador",
-  "subBreeds": ""
-}
-```
-
-**Response `409 Conflict`** — if the breed already exists.
+* Returns **201 Created** on success
+* Returns **409 Conflict** if breed already exists
 
 ---
 
-### Update a breed
+### 4. Update a breed
 
 ```
 PUT /api/dogs/{id}
-Content-Type: application/json
 ```
 
-**Example:** `PUT /api/dogs/3`
+Example:
+
+```
+PUT /api/dogs/3
+```
 
 **Request body:**
+
 ```json
 {
   "breed": "poodle",
@@ -125,101 +129,125 @@ Content-Type: application/json
 }
 ```
 
-**Response `200 OK`** — returns the updated breed object.
-
-**Response `404 Not Found`** — if the ID does not exist.
+* Returns updated data
+* Returns **404** if ID not found
 
 ---
 
-### Delete a breed
+### 5. Delete a breed
 
 ```
 DELETE /api/dogs/{id}
 ```
 
-**Example:** `DELETE /api/dogs/3`
-
-**Response `204 No Content`** — breed successfully deleted.
-
-**Response `404 Not Found`** — if the ID does not exist.
+* Returns **204** if deleted
+* Returns **404** if ID not found
 
 ---
 
-## Running Locally
+## 💻 Run Locally
 
 ### Prerequisites
 
-- Java 17 ([Adoptium Temurin](https://adoptium.net))
-- Maven (or use the included `./mvnw` wrapper)
-- PostgreSQL 15 running locally
+* Java 17
+* Maven
+* PostgreSQL
 
-### 1. Clone the repository
+---
+
+### Steps
+
+1. Clone the project
 
 ```bash
 git clone https://github.com/krishnamohanvaddi/dogs-api.git
 cd dogs-api
 ```
 
-### 2. Create a local PostgreSQL database
+2. Create database
 
 ```sql
 CREATE DATABASE dogs;
 ```
 
-### 3. Configure local properties
+3. Update database config
+   Go to:
 
-Update `src/main/resources/application.properties`:
+```
+src/main/resources/application.properties
+```
+
+Update:
 
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/dogsdb
 spring.datasource.username=postgres
 spring.datasource.password=YOUR_PASSWORD
-
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.defer-datasource-initialization=true
-spring.sql.init.mode=always
-server.port=8080
 ```
 
-### 4. Run the application
+---
+
+4. Run the app
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-The API will be available at `http://localhost:8080`.
+---
 
-### 5. Verify
+5. Test it
+   Open:
 
-Open `http://localhost:8080/api/dogs` in your browser — you should see all breeds returned as JSON.
+```
+http://localhost:8080/api/dogs
+```
 
 ---
 
-## Deployment on Render
+## 🚀 Deployment (Render)
 
-This service is deployed on [Render](https://render.com) using its **Docker runtime**.
+This project is deployed on Render using Docker.
 
-### Steps followed
+### What I did:
 
-1. Pushed code (including `Dockerfile`) to GitHub
-2. Created a **PostgreSQL** database on Render (free plan)
-3. Created a **Web Service** on Render — connected to the GitHub repo, runtime set to **Docker**
-4. Added the three environment variables listed below
-5. Render auto-deploys on every push to `main`
+* Pushed code to GitHub
+* Created PostgreSQL database in Render
+* Created a web service using Docker
+* Added environment variables
+* Enabled auto-deploy
 
-> **Note:** Render's free web service spins down after 15 minutes of inactivity. The first request after a sleep period may take up to 60 seconds. Subsequent requests respond normally.
+⚠️ Note:
+Render free tier sleeps after some time.
+First request may take ~30–60 seconds.
+
+---
+
+## 🔑 Environment Variables
+
+Set these in Render:
+
+* `DATABASE_URL`
+* `DATABASE_USERNAME`
+* `DATABASE_PASSWORD`
+* `PORT`
 
 ---
 
-## Environment Variables
+## 🧠 Simple Design Decision
 
-These must be set in the Render dashboard (or your local environment):
-
-| Variable | Description | Example |
-|---|---|---|
-| `DATABASE_URL` | JDBC connection string to PostgreSQL | `jdbc:postgresql://host/dbname` |
-| `DATABASE_USERNAME` | Database username | `dogs_db_user` |
-| `DATABASE_PASSWORD` | Database password | `supersecretpassword` |
-| `PORT` | Port the server listens on | `8080` |
+* I stored sub-breeds as a **comma-separated string** instead of creating a separate table
+* This keeps things simple for this use case
 
 ---
+
+## 🔮 Improvements (if extended)
+
+If I continue this project, I would:
+
+* Add pagination for large data
+* Restrict CORS properly
+* Add authentication and security
+
+---
+
+
